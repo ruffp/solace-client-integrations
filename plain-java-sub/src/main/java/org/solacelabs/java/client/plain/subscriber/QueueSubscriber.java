@@ -19,10 +19,9 @@ import java.util.concurrent.CountDownLatch;
 public class QueueSubscriber {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QueueSubscriber.class);
+    private static final int MSG_COUNT = 100;
 
     public static void main(String... args) throws Exception {
-
-
         // Check command line arguments
         if (args.length < 4 || args[1].split("@").length != 2) {
             LOGGER.info("Usage: QueueSubscriber <host:port> <client-username@message-vpn> <client-password> <queueName>");
@@ -51,7 +50,8 @@ public class QueueSubscriber {
         session.connect();
         LOGGER.info("Successfully Connected!");
 
-        final CountDownLatch latch = new CountDownLatch(5);
+        // The subscriber consumes MSG_COUNT messages then exit
+        final CountDownLatch latch = new CountDownLatch(MSG_COUNT);
 
         LOGGER.info("Attempting to provision the queue '{}' on the appliance.", queueName);
         final EndpointProperties endpointProps = new EndpointProperties();
@@ -93,9 +93,11 @@ public class QueueSubscriber {
 
         try {
             latch.await(); // block here until message received, and latch will flip
+            LOGGER.info("Received '{}' message, then exiting", MSG_COUNT);
         } catch (InterruptedException e) {
             LOGGER.info("I was awoken while waiting");
         }
+
 
         LOGGER.info("Exiting.");
         session.closeSession();

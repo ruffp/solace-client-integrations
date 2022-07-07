@@ -1,91 +1,85 @@
 package org.solacelabs.java.client.plain.producer;
 
-import com.solacesystems.jcsmp.DeliveryMode;
-import com.solacesystems.jcsmp.EndpointProperties;
 import com.solacesystems.jcsmp.JCSMPException;
 import com.solacesystems.jcsmp.JCSMPFactory;
 import com.solacesystems.jcsmp.JCSMPProperties;
 import com.solacesystems.jcsmp.JCSMPSession;
-import com.solacesystems.jcsmp.JCSMPStreamingPublishEventHandler;
-import com.solacesystems.jcsmp.Queue;
+import com.solacesystems.jcsmp.JCSMPStreamingPublishCorrelatingEventHandler;
 import com.solacesystems.jcsmp.TextMessage;
+import com.solacesystems.jcsmp.Topic;
 import com.solacesystems.jcsmp.XMLMessageProducer;
-
-import java.text.DateFormat;
-import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TopicPublisher {
 
-    public static void main(String... args) throws Exception {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TopicPublisher.class);
+
+    public static void main(String... args) throws JCSMPException {
 
         // Check command line arguments
-        if (args.length < 2 || args[1].split("@").length != 2) {
-            System.out.println("Usage: org.solacelabs.java.client.plain.producer.TopicPublisher <host:port> <client-username@message-vpn> [client-password]");
-            System.out.println();
+        if (args.length != 4 || args[1].split("@").length != 2) {
+            LOGGER.info("Usage: TopicPublisher <host:port> <client-username@message-vpn> <client-password> <topicName>");
             System.exit(-1);
         }
         if (args[1].split("@")[0].isEmpty()) {
-            System.out.println("No client-username entered");
-            System.out.println();
+            LOGGER.info("No client-username entered");
             System.exit(-1);
         }
         if (args[1].split("@")[1].isEmpty()) {
-            System.out.println("No message-vpn entered");
-            System.out.println();
+            LOGGER.info("No message-vpn entered");
             System.exit(-1);
         }
 
-        System.out.println("org.solacelabs.java.client.plain.producer.TopicPublisher initializing...");
+        LOGGER.info("TopicPublisher initializing...");
 
+        // Create a JCSMP Session
         final JCSMPProperties properties = new JCSMPProperties();
-        properties.setProperty(JCSMPProperties.HOST, args[0]);
-        properties.setProperty(JCSMPProperties.USERNAME, args[1].split("@")[0]);
-        properties.setProperty(JCSMPProperties.VPN_NAME, args[1].split("@")[1]);
-        if (args.length > 2) {
-            properties.setProperty(JCSMPProperties.PASSWORD, args[2]);
-        }
+        properties.setProperty(JCSMPProperties.HOST, args[0]);     // host:port
+        properties.setProperty(JCSMPProperties.USERNAME, args[1].split("@")[0]); // client-username
+        properties.setProperty(JCSMPProperties.VPN_NAME, args[1].split("@")[1]); // message-vpn
+        properties.setProperty(JCSMPProperties.PASSWORD, args[2]); // client-password
 
+        final String topicName = args[3];
         final JCSMPSession session = JCSMPFactory.onlyInstance().createSession(properties);
 
         session.connect();
-        System.out.println("Successfully Connected!");
 
-        // create the queue object locally
-        String queueName = "Q/tutorial";
-        final Queue queue = JCSMPFactory.onlyInstance().createQueue(queueName);
+        final Topic topic = JCSMPFactory.onlyInstance().createTopic(topicName);
 
-// set queue permissions to "consume" and access-type to "exclusive"
-        final EndpointProperties endpointProps = new EndpointProperties();
-        endpointProps.setPermission(EndpointProperties.PERMISSION_CONSUME);
-        endpointProps.setAccessType(EndpointProperties.ACCESSTYPE_EXCLUSIVE);
+        // Anonymous inner-class for handling publishing events
+        XMLMessageProducer producer = session.getMessageProducer(new JCSMPStreamingPublishCorrelatingEventHandler() {
 
-// Actually provision it, and do not fail if it already exists
-        session.provision(queue, endpointProps, JCSMPSession.FLAG_IGNORE_ALREADY_EXISTS);
+            @Override
+            public void responseReceivedEx(Object o) {
+                LOGGER.info("Producer received response");
+            }
 
-        XMLMessageProducer prod = session.getMessageProducer(new JCSMPStreamingPublishEventHandler() {
+            @Override
+            public void handleErrorEx(Object o, JCSMPException e, long l) {
+                LOGGER.error("handleErrorEx: an error has occured ");
+            }
+
+            @Override
+            public void handleError(String messageID, JCSMPException cause, long timestamp) {
+                JCSMPStreamingPublishCorrelatingEventHandler.super.handleError(messageID, cause, timestamp);
+                LOGGER.error("Producer received error for msg: {}@{}", messageID, timestamp, cause);
+            }
 
             @Override
             public void responseReceived(String messageID) {
-                System.out.println("Producer received response for msg: " + messageID);
-            }
-
-            @Override
-            public void handleError(String messageID, JCSMPException e, long timestamp) {
-                System.out.printf("Producer received error for msg: %s@%s - %s%n", messageID, timestamp, e);
+                JCSMPStreamingPublishCorrelatingEventHandler.super.responseReceived(messageID);
+                LOGGER.info("Producer received response for msg: {}", messageID);
             }
         });
 
-        final Queue queue1 = JCSMPFactory.onlyInstance().createQueue("Q/tutorial");
+        // Publish-only session is now hooked up and running!
         TextMessage msg = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
-        msg.setDeliveryMode(DeliveryMode.PERSISTENT);
-        String text = "Persistent Queue Tutorial! " +
-                DateFormat.getDateTimeInstance().format(new Date());
+        final String text = "Hello world!";
         msg.setText(text);
-// Delivery not yet confirmed. See ConfirmedPublish.java
-        prod.send(msg, queue);
-
-        System.out.println("Exiting.");
+        LOGGER.info("Connected. About to send message '{}' to topic '{}'...", text, topic.getName());
+        producer.send(msg, topic);
+        LOGGER.info("Message sent. Exiting.");
         session.closeSession();
     }
-
 }
