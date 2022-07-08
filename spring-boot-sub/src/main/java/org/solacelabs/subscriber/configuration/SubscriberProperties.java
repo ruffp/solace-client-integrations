@@ -1,4 +1,4 @@
-package org.solacelabs.configuration;
+package org.solacelabs.subscriber.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

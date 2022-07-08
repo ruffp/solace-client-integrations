@@ -1,0 +1,15 @@
+server:
+  port: 8092
+
+publisher:
+  enabled: true
+  topicName: "news/sport/football"
+
+solace:
+  jms:
+    host: localhost:55554
+    msgVpn: default
+    clientUsername: admin
+    clientPassword: admin
+    clientName: spring-boot-pub
+

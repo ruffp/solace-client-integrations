@@ -1,8 +1,9 @@
-package org.solacelabs.configuration;
+package org.solacelabs.subscriber.configuration;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import javax.jms.ConnectionFactory;
 
@@ -15,7 +16,6 @@ import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ErrorHandler;
 
-@EnableJms
 @Configuration
 public class SubscriberConfig {
 
@@ -31,21 +31,13 @@ public class SubscriberConfig {
     }
 
     @Service
-    public class DemoErrorHandler implements ErrorHandler{   
-
+    public static class DemoErrorHandler implements ErrorHandler{
         public void handleError(Throwable t) {
         	ByteArrayOutputStream os = new ByteArrayOutputStream();
         	PrintStream ps = new PrintStream(os);
         	t.printStackTrace(ps);
-        	try {
-				String output = os.toString("UTF8");
-	            LOGGER.error("============= Error processing message: '{}'\nOutput: '{}'", t.getMessage(), output);
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
- 
+            String output = os.toString(StandardCharsets.UTF_8);
+            LOGGER.error("============= Error processing message: '{}'\nOutput: '{}'", t.getMessage(), output);
         }
     }
-
 }
