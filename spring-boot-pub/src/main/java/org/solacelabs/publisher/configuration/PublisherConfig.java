@@ -1,4 +1,4 @@
-package solacelabs.publisher.configuration;
+package org.solacelabs.publisher.configuration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,9 +39,7 @@ public class PublisherConfig {
     @Bean
     public JmsTemplate jmsTemplate() {
         CachingConnectionFactory ccf = new CachingConnectionFactory(connectionFactory);
-        JmsTemplate template = new JmsTemplate(ccf);
-        //template.setPubSubDomain(true);
-        return template;
+        return new JmsTemplate(ccf);
     }
 
     @Service
@@ -53,7 +51,6 @@ public class PublisherConfig {
             t.printStackTrace(ps);
             String output = os.toString(StandardCharsets.UTF_8);
             LOGGER.error("============= Error processing message: '{}'\nOutput: '{}'", t.getMessage(), output);
-
         }
     }
 

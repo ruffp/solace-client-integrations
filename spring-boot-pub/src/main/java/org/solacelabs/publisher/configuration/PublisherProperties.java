@@ -1,4 +1,4 @@
-package solacelabs.publisher.configuration;
+package org.solacelabs.publisher.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

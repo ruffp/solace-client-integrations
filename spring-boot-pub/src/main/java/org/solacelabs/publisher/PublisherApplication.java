@@ -1,9 +1,9 @@
-package solacelabs.publisher;
+package org.solacelabs.publisher;
 
+import org.solacelabs.publisher.configuration.PublisherProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import solacelabs.publisher.configuration.PublisherProperties;
 
 @SpringBootApplication
 @EnableConfigurationProperties(PublisherProperties.class)
