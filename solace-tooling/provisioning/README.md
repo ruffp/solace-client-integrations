@@ -4,7 +4,7 @@
 
 ### 1. Python scripts
 
-Python scripts are used for calling Solace SEMP API:
+Python scripts are used for calling Solace SEMPv2 API:
 
 * create-queue.py
 * delete-queue.py

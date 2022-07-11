@@ -6,7 +6,7 @@ python3 create-queue.py queue-tennis
 
 python3 subscribe-queue.py queue-football news/sport/football
 python3 subscribe-queue.py queue-hockey news/sport/hockey
-python3 subscribe-queue.py queue-basketball news/sport/baskeball
+python3 subscribe-queue.py queue-basketball news/sport/basketball
 python3 subscribe-queue.py queue-handball news/sport/handball
 python3 subscribe-queue.py queue-tennis news/sport/tennis
 

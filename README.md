@@ -16,24 +16,101 @@ All docker related configuration are located in the ./docker folder. Subfolder c
 
 ## Project list
 The current project list is
-- plain-java-pub
-- plain-java-sub
-- python-pub
-- spring-boot-pub
-- spring-boot-rabbit-bridge
-- spring-boot-sub
+- plain-java-pub, a plain java simple App agnostic from any framework to publish in a topic.
+- plain-java-sub, a plain java simple App agnostic from any framework to subscribe to a queue.
+- python-pub, python publisher (later)
+- spring-boot-pub, a Spring-Boot App with autoconfigure to publish in a topic/queue (with REST API).
+- spring-boot-rabbit-bridge (under construction)
+- spring-boot-sub, a Spring-Boot App with autoconfigure to subscribe to a queue.
 
-More project sample can be added later on.
+More project samples can be added later on.
 
 ## Solace Administration
+The Solace Admin console is accessible from [this URL](http://localhost:8090/#/login)
+
+You can also access the SEMPv2 REST APi through: http://localhost:8090/SEMP/v2/config 
+(You have to provide Basic Auth admin/admin to use the local docker instance SEMP API)
+
+A details SEMP (v2) API reference can be found [here](https://docs.solace.com/Admin/SEMP/SEMP-API-Ref.htm).
+
 
 ## Solace Tooling
+The folder `solace-tooling` provides two kind of tools in different folders:
+ - provisioning
+   
+    This folder contains bash and python scripts to create the topics and queuus for the samples to be run properly.
 
-### provisioning 
+ - sdkperf-jcsmp-8.4.5.19
 
-### Tool "sdkperf"
+    The SdkPerf tool is a tool provided by Solace to enable sending or consuming sample messages in a bash. This is the java version which need a JDK to be installed to use it.
 
-## Use cases
+### Folder provisioning 
 
+[Link to specific README.md](solace-tooling/provisioning/README.md)
 
+To summarize, the current scripts are creating 5 queues
+* queue-football
+* queue-hockey
+* queue-basketball
+* queue-handball
+* queue-tennis
 
+which each subscribes to their own topics: 
+
+* news/sport/football
+* news/sport/hockey
+* news/sport/basketball
+* news/sport/handball
+* news/sport/tennis
+
+### Solace Tool `sdkperf`
+The official doc of the sdkperf is [here](https://docs.solace.com/API/SDKPerf/SDKPerf.htm).
+
+Some useful command:
+
+```bash
+# Get the help
+> ./sdkperf_java.sh
+> ./sdkperf_java.sh -h
+
+# Get the advanced help
+> ./sdkperf_java.sh -hm
+
+# subscribe to a topic
+> ./sdkperf_java.sh -cip=localhost:55554 -cu=admin@default -cp=admin -stl="news/sports/basketball" -md -q
+
+# subscribe to a queue
+> ./sdkperf_java.sh -cip=localhost:55554 -cu=admin@default -cp=admin -sql="queue-basketball" -md -q
+
+# publish to a topic
+> ./sdkperf_java.sh -cip=localhost:55554 -cu=admin@default -cp=admin -ptl="news/sport/football" -mn=10 -mr=5 -mt=persistent -md
+
+# publish to a topic
+> ./sdkperf_java.sh -cip=localhost:55554 -cu=admin@default -cp=admin -pql="queue-basketball" -mn=10 -mr=5 -mt=persistent -md
+``` 
+> **_IMPORTANT NOTE:_** With the sdkperf tool cannot send a specifi body but you can tweak the option to send multiple message and setup a size for each message.
+
+More information [here](https://docs.solace.com/API/SDKPerf/SDKPerf.htm). 
+
+## Use cases: test the code 
+
+Once you created the queues with the [provisioning](#Folder provisioning) part, you can start playing with the samples:
+
+* In each plain-java projects you have a bash script `launcher.sh <name>` at the root to start subscribing or publishing messages.
+* Spring-Boot project relies on the `solace-spring-boot-starter` which contian all the dependencies for starting publishing/subscribing to Solace.
+* Spring-Boot RabbitMQ (will) contains a Publisher and Subscriber samples for a Solace-Rabbit integration.
+
+To summarize each project:
+
+### Simple Java Queue Subscriber: `plain-java-sub`
+Listen to the queue given as parameter to the launcher script.
+
+### Simple Java Topic Publisher: `plain-java-pub`
+Sends a "Hello world!" message in the topic given as parameter to the launcher script.
+
+### Spring-Boot Subscriber with autoconfig
+Subscribe to the queue defined as property: `subscriber.queueName` in the `application.yml`.
+Launch the Spring-Boot app with maven launcher in command line or in your favorite IDE.
+
+### A Spring-Boot Publisher with autoconfig
+The App exposes a REST endpoint where you can POST a body in a given topic or queue.

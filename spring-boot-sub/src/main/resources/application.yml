@@ -1,7 +1,7 @@
 server:
   port: 8091
 subscriber:
-  enabled: true
+  logEnabled: true
   queueName: queue-football
 
 solace:

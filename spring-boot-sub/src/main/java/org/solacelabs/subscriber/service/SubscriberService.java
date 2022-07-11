@@ -38,6 +38,10 @@ public class SubscriberService {
         }
         msgAsStr.append("\nPayload: ")
                 .append(msg.getPayload());
-        logger.info(msgAsStr.toString());
+        if( subscriberProperties.logEnabled()){
+            logger.info("Message consumed: {}", msgAsStr);
+        }else{
+            logger.info("A message has been consumed");
+        }
     }
 }
