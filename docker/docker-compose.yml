@@ -4,7 +4,8 @@ version: '3.8'
 services:
   rabbit:
     container_name: rabbitmq
-    image: rabbitmq:3.10.5
+    build: ./rabbitmq
+    image: rabbitmq-shovel-3.10.5
     ports:
       - "4672:5672"
       - "14672:15672"
