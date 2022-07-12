@@ -88,7 +88,7 @@ Some useful command:
 # publish to a topic
 > ./sdkperf_java.sh -cip=localhost:55554 -cu=admin@default -cp=admin -pql="queue-basketball" -mn=10 -mr=5 -mt=persistent -md
 ``` 
-> **_IMPORTANT NOTE:_** With the sdkperf tool cannot send a specifi body but you can tweak the option to send multiple message and setup a size for each message.
+> **_IMPORTANT NOTE:_** With the `sdkperf` tool cannot send a specific body, but you can tweak the option to send multiple message and set up a size for each message.
 
 More information [here](https://docs.solace.com/API/SDKPerf/SDKPerf.htm). 
 
