@@ -1,3 +1,14 @@
+# create queue for direct messaging
+python3 create-queue.py FROM_RABBIT
+python3 create-queue.py TO_RABBIT
+python3 create-queue.py TEST_PYTHON
+
+python3 patch-queue.py FROM_RABBIT
+python3 patch-queue.py TO_RABBIT
+python3 patch-queue.py TEST_PYTHON
+
+# Create queue with subscriptions
+
 python3 create-queue.py queue-football
 python3 create-queue.py queue-hockey
 python3 create-queue.py queue-basketball

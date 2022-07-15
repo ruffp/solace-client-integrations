@@ -9,6 +9,10 @@ services:
     ports:
       - "4672:5672"
       - "14672:15672"
+    networks:
+      backend:
+        aliases:
+          - rabbit-host
   solace:
     container_name: solace-pubsub
     image: solace/solace-pubsub-standard:latest
@@ -62,3 +66,9 @@ services:
       - username_admin_globalaccesslevel=admin
       - username_admin_password=admin
       - system_scaling_maxconnectioncount=100
+    networks:
+      backend:
+        aliases:
+          - solace-host
+networks:
+  backend:
