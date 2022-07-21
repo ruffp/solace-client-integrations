@@ -2,7 +2,7 @@ from amqpstorm import Connection
 from amqpstorm import Message
 
 # This is currently not working - probably the lib is not compatible with amqp 1-0-0
-connection = Connection('localhost', 'rabbit', 'rabbit', port=5672)
+connection = Connection('localhost', 'rabbit', 'rabbit', port=5672, virtual_host="default")
 
 channel = connection.channel()
 

@@ -70,5 +70,12 @@ services:
       backend:
         aliases:
           - solace-host
+    # Solace does not start if volumes are set
+#    volumes:
+#      - ./volumes/solace/jail:/usr/sw/jail
+#      - ./volumes/solace/var:/usr/sw/var
+#      - ./volumes/solace/internalSpool:/usr/sw/internalSpool
+#      - ./volumes/solace/adb:/usr/sw/adb
+#      - ./volumes/solace/secrets:/run/secrets
 networks:
   backend:
