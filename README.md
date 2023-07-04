@@ -26,27 +26,42 @@ The current project list is
 More project samples can be added later on.
 
 ## Solace Administration
+
 The Solace Admin console is accessible from [this URL](http://localhost:8090/#/login)
 
-You can also access the SEMPv2 REST APi through: http://localhost:8090/SEMP/v2/config 
+You can also access the SEMPv2 REST APi through: http://localhost:8090/SEMP/v2/config
 (You have to provide Basic Auth admin/admin to use the local docker instance SEMP API)
 
 A details SEMP (v2) API reference can be found [here](https://docs.solace.com/Admin/SEMP/SEMP-API-Ref.htm).
 
+## Scripts
 
-## Solace Tooling
+The `scripts` folder contains tooling and scripting for the different broker in the project.
+
+### Rabbit Tooling
+
+The folder `rabbit-tooling` provides two kind of tools in different folders:
+
+- provisioning
+
+  This folder contains bash and python scripts to create the topics and queues for the samples to be run properly.
+
+### Solace Tooling
+
 The folder `solace-tooling` provides two kind of tools in different folders:
- - provisioning
-   
-    This folder contains bash and python scripts to create the topics and queuus for the samples to be run properly.
 
- - sdkperf-jcsmp-8.4.5.19
+- provisioning
 
-    The SdkPerf tool is a tool provided by Solace to enable sending or consuming sample messages in a bash. This is the java version which need a JDK to be installed to use it.
+  This folder contains bash and python scripts to create the topics and queues for the samples to be run properly.
 
-### Folder provisioning 
+- sdkperf-jcsmp-8.4.5.19
 
-[Link to specific README.md](solace-tooling/provisioning/README.md)
+  The SdkPerf tool is a tool provided by Solace to enable sending or consuming sample messages in a bash. This is the java version which need a JDK to be
+  installed to use it.
+
+### Folder provisioning
+
+[Link to specific README.md](scripts/solace-tooling/provisioning/README.md)
 
 To summarize, the current scripts are creating 5 queues
 * queue-football
@@ -97,8 +112,8 @@ More information [here](https://docs.solace.com/API/SDKPerf/SDKPerf.htm).
 Once you created the queues with the [provisioning](#Folder provisioning) part, you can start playing with the samples:
 
 * In each plain-java projects you have a bash script `launcher.sh <name>` at the root to start subscribing or publishing messages.
-* Spring-Boot project relies on the `solace-spring-boot-starter` which contian all the dependencies for starting publishing/subscribing to Solace.
-* Spring-Boot RabbitMQ (will) contains a Publisher and Subscriber samples for a Solace-Rabbit integration.
+* Spring-Boot project relies on the `solace-spring-boot-starter` which contain all the dependencies for starting publishing/subscribing to Solace.
+* Spring-Boot RabbitMQ contains a Publisher and Subscriber samples for a Solace-Rabbit integration.
 
 To summarize each project:
 
@@ -106,11 +121,29 @@ To summarize each project:
 Listen to the queue given as parameter to the launcher script.
 
 ### Simple Java Topic Publisher: `plain-java-pub`
+
 Sends a "Hello world!" message in the topic given as parameter to the launcher script.
 
 ### Spring-Boot Subscriber with autoconfig
+
 Subscribe to the queue defined as property: `subscriber.queueName` in the `application.yml`.
 Launch the Spring-Boot app with maven launcher in command line or in your favorite IDE.
 
 ### A Spring-Boot Publisher with autoconfig
+
+The App exposes a REST endpoint where you can POST a body in a given topic or queue.
+Here is th curl command you can use for publishing messages in topic or queues:
+
+```
+curl --location 'http://localhost:8092/solace/spring/publisher/topic?name=news%2Fsport%2Fhandball' \
+--header 'Content-Type: application/json' \
+--data '{
+"message": "hello from curl",
+"type": "notification"
+}'
+```
+
+
+### A Spring-Boot Rabbit Bridge
+
 The App exposes a REST endpoint where you can POST a body in a given topic or queue.

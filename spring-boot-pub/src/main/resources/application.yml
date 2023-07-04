@@ -5,11 +5,19 @@ publisher:
   enabled: true
   topicName: "news/sport/football"
 
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+management:
+  health:
+    jms:
+      enabled: true
+
 solace:
   jms:
     host: localhost:55554
-    msgVpn: default
-    clientUsername: admin
-    clientPassword: admin
+    msg-vpn: default
+    client-username: admin
+    client-password: admin
     clientName: spring-boot-pub
-

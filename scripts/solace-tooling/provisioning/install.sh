@@ -1,5 +1,5 @@
 # Setup Basic auth with Internal database (needed for RabbitMQ bridge
-python3 patch-vpn.py
+# python3 patch-vpn.py
 
 # create queue for RabbitMQ Bridge and Direct messaging
 python3 create-queue.py FROM_RABBIT

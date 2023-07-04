@@ -18,18 +18,7 @@
 
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <logback-classic.version>1.2.11</logback-classic.version>
-        <sol-jcsmp.version>[10,)</sol-jcsmp.version>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.solacesystems</groupId>
-                <artifactId>sol-jcsmp</artifactId>
-                <version>${sol-jcsmp.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>

@@ -22,8 +22,8 @@ public class SubscriberService {
     }
 
     // Retrieve the name of the queue from the application.properties file
-    @JmsListener(destination = "${subscriber.queueName}", containerFactory = "cFactory", concurrency = "2")
-    public void processMsg(Message<?> msg) {
+    @JmsListener(destination = "${subscriber.queueName}", concurrency = "2")
+    public void handle(Message<?> msg) {
         StringBuilder msgAsStr = new StringBuilder("============= Received \nHeaders:");
         MessageHeaders msgHeaders = msg.getHeaders();
         msgAsStr.append("\nUUID: ")
