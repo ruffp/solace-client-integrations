@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Setup Basic auth with Internal database (needed for RabbitMQ bridge
 # python3 patch-vpn.py
 
@@ -28,3 +30,16 @@ python3 patch-queue.py queue-hockey
 python3 patch-queue.py queue-basketball
 python3 patch-queue.py queue-handball
 python3 patch-queue.py queue-tennis
+
+# Provision test queues
+
+python3 create-queue.py test-basketball
+python3 create-queue.py test-football
+python3 create-queue.py test-sports
+python3 patch-queue.py test-basketball
+python3 patch-queue.py test-football
+python3 patch-queue.py test-sports
+python3 subscribe-queue.py test-football news/sport/football
+python3 subscribe-queue.py test-basketball news/sport/basketball
+python3 subscribe-queue.py test-sports news/sport/*
+

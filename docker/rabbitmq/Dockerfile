@@ -1,7 +1,7 @@
 FROM rabbitmq:3.10.5
 
 # We install some developer's tooling here (not for prod!)
-RUN apt update && \
+RUN apt update --fix-missing && \
     apt install -y vim && \
     apt install -y nmap && \
     apt install -y netcat && \
