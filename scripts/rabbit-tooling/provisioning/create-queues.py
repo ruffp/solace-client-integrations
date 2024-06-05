@@ -17,7 +17,5 @@ data = res.read()
 print(data.decode("utf-8"))
 
 
-curl --location --request PUT 'http://localhost:15671/api/queues/%2F/TEST_QUEUE' \
-                              --header 'Content-Type: application/json' \
-                                       --header 'Authorization: Basic Z3Vlc3Q6Z3Vlc3Q=' \
-                                                --data-raw ''
+# curl -X PUT 'http://localhost:14672/api/queues/%2F/TEST_QUEUE' --header 'Content-Type: application/json' --header 'Authorization: Basic Z3Vlc3Q6Z3Vlc3Q=' --data-raw ''
+

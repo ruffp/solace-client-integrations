@@ -1,0 +1,19 @@
+server:
+  servlet:
+    context-path: /@project.artifactId@/v1
+  port: ${http.port:8280}
+
+camel:
+  component:
+    amqp:
+      client-id: sb-solace-camel-pubsub
+      username:
+      password:
+
+main:
+  env: loc
+  inbound:
+    autostart-enabled: true
+    error-dlq: amqp:queue:queue-tennis-dlq
+    from-endpoint: amqp:queue:queue-tennis
+    destination-endpoint: amqp:topic:news/sport/summary/tennis

@@ -16,8 +16,6 @@
     <description>Solace Client publisher Example with Plain Java</description>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
         <sol-jcsmp.version>[10,)</sol-jcsmp.version>
     </properties>
