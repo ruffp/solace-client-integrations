@@ -1,0 +1,11 @@
+server:
+  port: 8093
+subscriber:
+solace:
+  jms:
+    host: localhost:55554
+    msgVpn: default
+    clientUsername: rabbit
+    clientPassword: rabbit
+    clientName: spring-boot-sub
+    directTransport: true

@@ -1,0 +1,19 @@
+server:
+  port: 8091
+subscriber:
+  logEnabled: true
+  queueName: queue-football
+
+management:
+  health:
+    jms:
+      enabled: true
+
+solace:
+  jms:
+    host: localhost:55554
+    msg-vpn: default
+    client-username: admin
+    client-password: admin
+    client-name: spring-boot-sub
+#    direct-transport: false

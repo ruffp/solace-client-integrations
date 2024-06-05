@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+    <Appenders>
+        <Console name="A1">
+            <PatternLayout pattern="%d [%t] %-5p [%c] %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.solacesystems" level="WARN" additivity="false">
+            <AppenderRef ref="A1"/>
+        </Logger>
+        <Logger name="com.solace" level="INFO" additivity="false">
+            <AppenderRef ref="A1"/>
+        </Logger>
+        <Root level="WARN">
+            <AppenderRef ref="A1"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,20 @@
+# User specific aliases and functions
+alias ls='LC_COLLATE=C ls -h --group-directories-first --color=auto'
+alias l='ls -l'
+alias ll='ls -l'
+alias la='ls -al'
+alias lh='ls -lh'
+alias ..='cd ..'
+alias ...='cd ..;cd ..'
+alias psg='ps -ef | grep'
+alias g='grep'
+alias hg='history | grep'
+alias pgrep='pgrep -lf'
+
+# Java Aliases
+PATH=$PATH:$JAVA_HOME/bin
+alias jps='/usr/java/default/bin/jps'
+alias keytool='/usr/java/latest/bin/keytool'
+
+function ftail() { tail --follow=name "$@" | strings -n 20 ;}
+
