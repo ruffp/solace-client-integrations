@@ -1,0 +1,15 @@
+
+volumes/
+target/
+local-data/
+
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### VS Code ###
+.vscode/
+
