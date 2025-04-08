@@ -1,6 +1,6 @@
-/**
-* This is now useless in the latest version of Solace.
-*/
+#
+# This is now useless in the latest version of Solace.
+#
 
 import http.client
 

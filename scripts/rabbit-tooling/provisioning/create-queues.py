@@ -1,7 +1,7 @@
 import http.client
 import json
 
-conn = http.client.HTTPConnection("localhost", 14672)
+conn = http.client.HTTPConnection( host="localhost", port=14672 )
 payload = json.dumps({
         "auto_delete": False,
         "durable": True,
@@ -11,13 +11,12 @@ headers = {
     'content-type': 'application/json',
     'Authorization': 'Basic Z3Vlc3Q6Z3Vlc3Q='
 }
-conn.request("PUT", "/api/parameters/queues/%2F/", payload, headers)
+conn.request("PUT", "/api/queues/%2F/TO_SOLACE", payload, headers)
 res = conn.getresponse()
 data = res.read()
 print(data.decode("utf-8"))
 
-
-curl --location --request PUT 'http://localhost:15671/api/queues/%2F/TEST_QUEUE' \
-                              --header 'Content-Type: application/json' \
-                                       --header 'Authorization: Basic Z3Vlc3Q6Z3Vlc3Q=' \
-                                                --data-raw ''
+conn.request("PUT", "/api/queues/%2F/FROM_SOLACE", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))

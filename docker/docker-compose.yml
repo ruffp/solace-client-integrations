@@ -1,6 +1,6 @@
-# docker-compose -f docker-compose.yml up
-version: '3.8'
+# docker compose  up -d --build --force-recreate
 
+name: solace-integration
 services:
   rabbit:
     container_name: rabbitmq
@@ -55,7 +55,7 @@ services:
       #REST Default VPN over TLS
       #- '9443:9443'
       #SMF
-      - '55554:55555'
+      - '9555:55555'
       #SMF Compressed
       #- '55003:55003'
       #SMF over TLS

@@ -5,15 +5,15 @@ conn = http.client.HTTPConnection("localhost", 14672)
 payload = json.dumps({
     "component": "shovel",
     "value": {
-        "src-uri": "amqp://rabbit:rabbit@solace-host:5672",
+        "src-protocol": "amqp10",
+        "src-uri": "amqp://solace-host:5672",
         "src-address": "TO_RABBIT",
-        "src-protocol": "amqp100",
         "src-prefetch-count": 1,
         "src-delete-after": "never",
         "dest-protocol": "amqp091",
-        "dest-uri": "amqp://guest:guest@localhost:5672",
-        "dest-add-forward-headers": True,
+        "dest-uri": "amqp://guest:guest@localhost:5672/%2F",
         "dest-queue": "FROM_SOLACE",
+        "dest-add-forward-headers": True,
         "ack-mode": "on-confirm"
     }
 })
@@ -25,3 +25,5 @@ conn.request("PUT", "/api/parameters/shovel/%2F/solace-to-rabbit", payload, head
 res = conn.getresponse()
 data = res.read()
 print(data.decode("utf-8"))
+
+

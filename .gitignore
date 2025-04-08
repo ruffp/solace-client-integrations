@@ -13,3 +13,6 @@ local-data/
 ### VS Code ###
 .vscode/
 
+### Misc
+
+.cache_ggshield

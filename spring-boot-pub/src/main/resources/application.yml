@@ -16,7 +16,7 @@ management:
 
 solace:
   jms:
-    host: localhost:55554
+    host: localhost:9555
     msg-vpn: default
     client-username: admin
     client-password: admin
